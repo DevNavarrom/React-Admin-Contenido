@@ -1,30 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
+# React-Admin-Contenido
 
-## Getting Started
+_App web en ReactJS + Next.js para la administración de contenidos (Articulos, Albumes y Tareas)
 
-First, run the development server:
+## Comenzando 🚀
 
-```bash
-npm run dev
-# or
-yarn dev
+_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+
+### Pre-requisitos 📋
+
+_Una vez descargado o clonado el proyecto ejecutar las siguientes instrucciones para tener un entorno de desarrollo ejecutandose_
+
+_Para descargar los modulos de Node, ejecutar por consola en la ruta del proyecto:_
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Ejecutando el proyecto ⚙️
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+_Para ejecutar en modo Desarrollo_
 
-## Learn More
+```
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+_El proyecto sera ejecutado en la direccion http://localhost:3000_
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Despliegue 📦
+_Para desplegar nuestro proyecto a produccion primero compilamos_
 
-You can check out [the Next.js GitHub repository](https://github.com/zeit/next.js/) - your feedback and contributions are welcome!
+```
+npm run build
+```
 
-## Deploy on ZEIT Now
+_Por ultimo_
 
-The easiest way to deploy your Next.js app is to use the [ZEIT Now Platform](https://zeit.co/) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+npm run prod
+```
+_Esto nos genera una carpeta con los archivos necesarios para subirlos a nuestro host_
+---
