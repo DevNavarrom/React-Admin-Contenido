@@ -41,33 +41,19 @@ export default class DetallesArticulo extends Component {
     }
 
     static async getInitialProps({ query, res }) {
-        //return { datos : query.id }
+        
         try {
             let idArticulo = query.id;
             
-            /* let [reqIngredientes, reqNutrientes, reqDetalles] = await Promise.all([
-                fetch(`http://localhost:4300/platos/${idPlato}/ingredientes`),
-                fetch(`http://localhost:4300/platos/${idPlato}/nutrientes`),
-                fetch(`http://localhost:4300/platos/${idPlato}/detalles`)
-            ]); */
-            //let reqDetalles = await fetch(`http://localhost:4300/platos/${idPlato}/detalles`);
             let reqDetalles = await axios.get(`https://jsonplaceholder.typicode.com/posts/${idArticulo}/comments`);
-    
-            /* if (reqDetalles.status >= 400) {
-                res.statusCode = reqDetalles.status;
-                return { ingredientes: null, nutrientes: null, datos: null, statusCode: reqDetalles.status}
-            } */
     
             if (reqDetalles.status >= 400) {
               res.statusCode = reqDetalles.status;
               return { datos: null, statusCode: reqDetalles.status}
             }
-            /* let {respuesta: ingredientes} = await reqIngredientes.json();
-            //let ingredientes = dataIngredientes.respuesta;
-            let {respuesta: nutrientes} = await reqNutrientes.json(); */
+            
             let {respuesta: datos} = await reqDetalles.data;
     
-            // return {ingredientes, nutrientes, datos, statusCode: 200}
             return {datos,statusCode: 200, articulo : query.slugArticulo}
     
         } catch (error) {
