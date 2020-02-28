@@ -6,7 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-
+import {Link} from '../../../../routes';
+import slug from '../../../helpers/slug';
 
 const useStyles = makeStyles({
   card: {
@@ -26,24 +27,26 @@ const ItemArticulo = (props) => {
 
   return (
     <Grid item xs={12} md={3} >
-      <CardActionArea component="a" href="#">
-        <Card className={classes.card}>
-          <div className={classes.cardDetails}>
-            <CardContent>
-              <Typography component="h2" variant="h5">
-                {post.title}
+      <Link route="articulo" params={{ slugArticulo: slug(post.title), id: post.id }}>
+        <CardActionArea component="a" href="#">
+          <Card className={classes.card}>
+            <div className={classes.cardDetails}>
+              <CardContent>
+                <Typography component="h2" variant="h5">
+                  {post.title}
+                </Typography>
+                <Typography variant="subtitle1" paragraph>
+                  {post.body}
+                </Typography>
+                <Typography variant="subtitle1" color="primary">
+                  Continuar leyendo...
               </Typography>
-              <Typography variant="subtitle1" paragraph>
-                {post.body}
-              </Typography>
-              <Typography variant="subtitle1" color="primary">
-                Continuar leyendo...
-              </Typography>
-            </CardContent>
-          </div>
-          
-        </Card>
-      </CardActionArea>
+              </CardContent>
+            </div>
+
+          </Card>
+        </CardActionArea>
+      </Link>
     </Grid>
   );
 }
