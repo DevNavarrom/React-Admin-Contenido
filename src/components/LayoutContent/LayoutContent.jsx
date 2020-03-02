@@ -8,6 +8,9 @@ import Button from '@material-ui/core/Button';
 import Articulos from "../Articulos/Articulos";
 import Albumes from "../Albumes/Albumes";
 import Grid from '@material-ui/core/Grid';
+import Parallax from "./Parallax/Parallax";
+import GridContainer from "./Grid/GridContainer";
+import GridItem from "./Grid/GridItem";
 
 
 const styles = theme => ({
@@ -77,8 +80,8 @@ class NavBarComponent extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   {/* <h1 className="title">¡Buen Appetito!</h1> */}
                   <Typography variant="h4">
-                    Prepara tu plato como desees desde tu casa, oficina o lugar de trabajo y nosotros te lo llevamos.
-                    Hazlo a tu antojo.
+                  et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\n
+                  voluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut
               </Typography>
 
                 </GridItem>

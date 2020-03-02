@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBarComponent from '../components/NavBar/NavBar';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import LayoutContent from '../components/LayoutContent/LayoutContent';
 
 
 
@@ -42,7 +43,8 @@ export default class extends Component {
       <div style={{ backgroundColor: '#F4F5F7', }}>
 
         <MuiThemeProvider theme={muiTheme}>
-          <NavBarComponent/>
+          {/* <NavBarComponent/> */}
+          <LayoutContent/>
         </MuiThemeProvider>
 
         {/* <Articulos/> */}

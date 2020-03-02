@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -129,23 +130,26 @@ export default class Articulos extends Component {
     render() {
 
         return (
-            <React.Fragment>
-                <CssBaseline />
-                <Grid container style={{ backgroundColor: '#FFFFFF',}}>
-                    <Grid item xs={12}>
-                        
-                        <CustomizedInputBase/>
+          <React.Fragment>
+            <CssBaseline />
+            <Grid container style={{ backgroundColor: '#FFFFFF', }}>
+              <Grid item xs={12}>
 
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} style={{ width: '100%', padding: '10px' }}>
-                  {
+                <CustomizedInputBase />
+
+              </Grid>
+            </Grid>
+            <Paper elevation={3} style={{ margin: '20px 10px' }}>
+              <Grid container spacing={2} style={{padding: '30px 10px' }}>
+                {
                   this.state.articulos.map(post => (
                     <ItemArticulo key={post.title} post={post} />
                   ))
-                  }
-                </Grid>
-            </React.Fragment>
+                }
+              </Grid>
+            </Paper>
+
+          </React.Fragment>
         );
     }
 }

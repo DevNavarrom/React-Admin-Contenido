@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Router from 'next/router';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { Parallax, Background } from 'react-parallax';
 import axios from 'axios';
 
 
@@ -63,7 +65,7 @@ export default class DetallesArticulo extends Component {
     }
 
     render() {
-        const {datos, articulo} = this.props;
+        const {datos, articulo, classes} = this.props;
 
         return (
             <>
@@ -71,7 +73,7 @@ export default class DetallesArticulo extends Component {
                     <div style={{ flexGrow : 1 }}>
                         <AppBar position="static">
                             <Toolbar variant="dense">
-                                <IconButton edge="start" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                                <IconButton onClick={() => Router.back()} edge="start" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                                     <ArrowBackIosIcon />
                                 </IconButton>
                                 <Typography variant="h6" color="inherit">
@@ -81,10 +83,31 @@ export default class DetallesArticulo extends Component {
                         </AppBar>
                     </div>
                 </MuiThemeProvider>
+
+                <Parallax strength={1000}>
+                    <Grid container xs={12} sm={12} md={12} lg={12} style={{ padding: '10px', margin: '20px 0px 0px'}}>
+                        <Paper elevation={3} >
+                            <Typography variant="h5" component="h3">
+                                This is a sheet of paper.
+                            </Typography>
+                            <Typography component="p">
+                                Paper can be used to build surface or other elements for your application.
+                            </Typography>
+                        </Paper>
+                        <Paper elevation={3} >
+                            <Typography variant="h5" component="h3">
+                                This is a sheet of paper.
+                            </Typography>
+                            <Typography component="p">
+                                Paper can be used to build surface or other elements for your application.
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Background className="custom-bg">
+                        <img src="http://www.fillmurray.com/500/320" alt="fill murray" />
+                    </Background>
+                </Parallax>
                 
-                <Grid container xs={12} sm={12} md={12} lg={12} style={{ padding: '10px', margin: '20px 0px 0px'}}>
-                    <Paper elevation={3} ></Paper>
-                </Grid>
             </>
         );
     }
