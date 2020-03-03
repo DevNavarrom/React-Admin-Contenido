@@ -139,15 +139,13 @@ export default class Articulos extends Component {
 
               </Grid>
             </Grid>
-            <Paper elevation={3} style={{ margin: '20px 10px' }}>
-              <Grid container spacing={2} style={{padding: '30px 10px' }}>
-                {
-                  this.state.articulos.map(post => (
-                    <ItemArticulo key={post.title} post={post} />
-                  ))
-                }
-              </Grid>
-            </Paper>
+            <Grid container spacing={2} style={{padding: '30px 10px' }}>
+              {
+                this.state.articulos.map(post => (
+                  <ItemArticulo key={post.title} post={post} />
+                ))
+              }
+            </Grid>
 
           </React.Fragment>
         );
