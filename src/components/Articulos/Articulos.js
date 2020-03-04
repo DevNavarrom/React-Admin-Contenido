@@ -132,22 +132,25 @@ export default class Articulos extends Component {
         return (
           <React.Fragment>
             <CssBaseline />
-            <Grid container style={{ backgroundColor: '#FFFFFF', }}>
+            {/* <Grid container style={{ backgroundColor: '#FFFFFF', }}>
               <Grid item xs={12}>
 
                 <CustomizedInputBase />
 
               </Grid>
-            </Grid>
-            <Paper elevation={3} style={{ margin: '20px 10px' }}>
-              <Grid container spacing={2} style={{padding: '30px 10px' }}>
-                {
-                  this.state.articulos.map(post => (
-                    <ItemArticulo key={post.title} post={post} />
-                  ))
-                }
+            </Grid> */}
+            <Grid container spacing={2} style={{padding: '30px 10px' }}>
+              <Grid item xs={12}>
+
+                <CustomizedInputBase />
+
               </Grid>
-            </Paper>
+              {
+                this.state.articulos.map(post => (
+                  <ItemArticulo key={post.title} post={post} />
+                ))
+              }
+            </Grid>
 
           </React.Fragment>
         );
