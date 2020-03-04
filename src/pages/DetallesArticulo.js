@@ -84,7 +84,7 @@ const muiTheme = createMuiTheme({
     }
   });
 
-const DetallesArticulo = (props) => {
+function DetallesArticulo(props) {
 
     //const {classes} = props;
 
@@ -140,10 +140,10 @@ const DetallesArticulo = (props) => {
 
             <div className={classNames(classes.main, classes.mainRaised)}>
                 <Grid item xs={12} className={classes.itemButtons}>
-                    <IconButton onClick={() => Router.back()} edge="start" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                    <IconButton onClick={() => Router.back()} edge="end" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => Router.back()} edge="start" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                    <IconButton onClick={() => Router.back()} edge="end" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <DeleteIcon />
                     </IconButton>
                 </Grid>
@@ -169,8 +169,9 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
           return { articulo: null, statusCode: reqPost.status }
         }
         
-        let { articulo } = await reqPost.data;
+        let articulo = await reqPost.data;
         //let {respuesta: datos} = await reqDetalles.data;
+        let reqUser = await axios.get(`https://jsonplaceholder.typicode.com/users/${articulo.userId}`);
 
         //return { articulo ,statusCode: 200, articulo : query.slugArticulo}
         return { articulo ,statusCode: 200 }
