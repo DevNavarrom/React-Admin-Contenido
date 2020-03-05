@@ -18,6 +18,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import CardMedia from '@material-ui/core/CardMedia';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import axios from 'axios';
@@ -31,6 +32,7 @@ const styles = theme => ({
     },
     mainRaised: {
         margin: "50px",
+        padding: "20px",
         borderRadius: "6px",
         boxShadow:
             "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
@@ -38,7 +40,8 @@ const styles = theme => ({
     itemButtons: {
         padding: '2px 4px',
         display: 'flex',
-        alignItems: 'right',
+        justify: 'flex-end',
+        alignItems: 'center',
         width: '100%',
       },
       root: {
@@ -57,6 +60,12 @@ const styles = theme => ({
         flexGrow: 1,
         alignSelf: 'flex-end',
       },
+      cardMedia: {
+        objectFit: 'cover',
+        marginRight: '20px',
+        padding: '25.25%',
+        borderRadius: "6px",
+      }
 });
 
 const muiTheme = createMuiTheme({
@@ -88,7 +97,7 @@ function DetallesArticulo(props) {
 
     //const {classes} = props;
 
-    const {datos, articulo, classes} = props;
+    const {usuario, articulo, classes} = props;
 
     return (
         <div style={{margin : "-10px"}}>
@@ -139,14 +148,35 @@ function DetallesArticulo(props) {
             </MuiThemeProvider>
 
             <div className={classNames(classes.main, classes.mainRaised)}>
-                <Grid item xs={12} className={classes.itemButtons}>
-                    <IconButton onClick={() => Router.back()} edge="end" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                <Grid container xs={12} direction="row" justify="flex-end" alignItems="center">
+                    <IconButton onClick={() => Router.back()} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => Router.back()} edge="end" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                    <IconButton onClick={() => Router.back()} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <DeleteIcon />
                     </IconButton>
                 </Grid>
+                <Grid container>
+                    <Grid item xs={12} md={6}>
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image="https://source.unsplash.com/random"
+                            title="Image title"
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Typography className={classes.title} variant="h4" noWrap>
+                            { articulo.title }
+                        </Typography>
+                        <Typography variant="subtitle1" paragraph>
+                            { articulo.body }
+                        </Typography>
+                        <Typography variant="h5" paragraph>
+                            { usuario.name }
+                        </Typography>
+                    </Grid>
+                </Grid>
+                
             </div>
             
         </div>
@@ -172,9 +202,14 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         let articulo = await reqPost.data;
         //let {respuesta: datos} = await reqDetalles.data;
         let reqUser = await axios.get(`https://jsonplaceholder.typicode.com/users/${articulo.userId}`);
+        let usuario = await reqUser.data;
+
+        if (reqUser.status >= 400) {
+            usuario = null;
+        }
 
         //return { articulo ,statusCode: 200, articulo : query.slugArticulo}
-        return { articulo ,statusCode: 200 }
+        return { articulo ,statusCode: 200, usuario }
 
     } catch (error) {
         res.statusCode = 503;
