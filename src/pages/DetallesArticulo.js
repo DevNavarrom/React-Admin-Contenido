@@ -28,6 +28,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 
 import axios from 'axios';
 
@@ -186,15 +187,23 @@ function DetallesArticulo(props) {
                         <Typography className={classes.title} variant="h4" noWrap>
                             { articulo.title }
                         </Typography>
-                        <Typography variant="subtitle1" paragraph>
+                        {/* <Typography variant="subtitle1" paragraph>
                             { articulo.body }
-                        </Typography>
+                        </Typography> */}
+                        <TextField
+                        style={{ width: '100%' }}
+                            id="standard-multiline-static"
+                            multiline
+                            rows="10"
+                            defaultValue={ articulo.body }
+                            disabled="true"
+                            />
                         <Typography variant="h6" paragraph>
                             { usuario.name }
                         </Typography>
                         <Container>
-                            <Typography variant="h5" gutterBottom>
-                                Comments
+                            <Typography variant="subtitle2" gutterBottom>
+                                {comentarios.length+" Comments"}
                             </Typography>
                             <List className={classes.list}>
                                 {comentarios.map(({ id, name, email, body }) => (
@@ -213,9 +222,9 @@ function DetallesArticulo(props) {
                                                         className={classes.inline}
                                                         color="textPrimary"
                                                     >
-                                                        {email} -
+                                                        {email}
                                                     </Typography>
-                                                    {body}
+                                                    {" - "+body}
                                                 </React.Fragment>
                                             } />
                                         </ListItem>
@@ -249,9 +258,9 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         
         //let reqDetalles = await axios.get(`https://jsonplaceholder.typicode.com/posts/${idArticulo}/comments`);
 
-        if (reqPost.status >= 400) {
+        if (reqPost.status >= 400 && reqComments.status >= 400) {
           res.statusCode = reqPost.status;
-          return { articulo: null, statusCode: reqPost.status }
+          return { articulo: null, comentarios: null, usuario: null, statusCode: reqPost.status }
         }
         
         let articulo = await reqPost.data;
@@ -265,7 +274,7 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         }
 
         //return { articulo ,statusCode: 200, articulo : query.slugArticulo}
-        return { articulo ,statusCode: 200, usuario, comentarios }
+        return { articulo , usuario, comentarios, statusCode: 200 }
 
     } catch (error) {
         res.statusCode = 503;
