@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +13,15 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import ItemArticulo from './item/ItemArticulo';
+import Fab from '@material-ui/core/Fab';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+
 import axios from 'axios';
 
 
@@ -32,6 +42,11 @@ const useStyles = makeStyles(theme => ({
     divider: {
       height: 28,
       margin: 4,
+    },
+    fabButton: {
+      position: 'fixed',
+      bottom: '2rem',
+      right: '2rem'
     },
   }));
 
@@ -107,7 +122,8 @@ export default class Articulos extends Component {
         super(props);
 
         this.state = {
-          articulos : []
+          articulos : [],
+          open: false
         }
     }
 
@@ -151,6 +167,68 @@ export default class Articulos extends Component {
                 ))
               }
             </Grid>
+
+            <Fab onClick={() => this.setState({ open: true })} color="secondary" aria-label="add" style={{ position: 'fixed', bottom: '2rem', right: '2rem'}}>
+              <AddIcon />
+            </Fab>
+
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              open={this.state.open}
+              onClose={() => this.setState({ open: false })}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={this.state.open}>
+                <Paper style={{ padding: '20px', width: '80%' }}>
+                <Typography variant="h6" gutterBottom>
+                    Create Post
+                </Typography>
+                <Divider variant="middle" orientation="horizontal" style={{ margin: '10px -10px' }} />
+
+               <Grid container direction="column" justify="center" spacing={3}>
+
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <FormControl variant="outlined" fullWidth>
+                        <TextField
+                          id="title-0"
+                          label="Title"
+                          placeholder="Title Post"
+                          multiline
+                          variant="outlined"
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <FormControl variant="outlined" fullWidth>
+                        <TextField
+                          id="body-1"
+                          label="Description"
+                          placeholder="Decription Post"
+                          multiline
+                          variant="outlined"
+                        />
+                      </FormControl>
+                    </Grid>
+
+                  </Grid>
+                  <Grid container direction="row" justify="flex-end" alignItems="center" style={{ marginTop: "10px" }}>
+                    <Button variant="outlined" size="large" color="secondary">
+                      Create
+                    </Button>
+                  </Grid>
+                </Paper>
+              </Fade>
+            </Modal>
 
           </React.Fragment>
         );

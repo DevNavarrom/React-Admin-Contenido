@@ -10,7 +10,7 @@ import Header from '../components/LayoutContent/Header/Header';
 import HeaderLinks from '../components/LayoutContent/Header/HeaderLinks';
 import HeaderLinksLeft from '../components/LayoutContent/Header/HeaderLinksLeft';
 
-import { Grid, Container } from "@material-ui/core";
+import { Grid, Container, InputBase } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FaceIcon from '@material-ui/icons/Face';
@@ -28,7 +28,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
+import SaveIcon from '@material-ui/icons/Save';
 
 import axios from 'axios';
 
@@ -117,6 +117,8 @@ function DetallesArticulo(props) {
 
     const {usuario, articulo, comentarios, classes} = props;
 
+    const [edit, setEdit] = React.useState(false);
+
     return (
         <div style={{margin : "-10px"}}>
             {/* <Header
@@ -167,10 +169,16 @@ function DetallesArticulo(props) {
 
             <div className={classNames(classes.main, classes.mainRaised)}>
                 <Grid container xs={12} direction="row" justify="flex-end" alignItems="center">
-                    <IconButton onClick={() => Router.back()} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => Router.back()} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                    {edit ? 
+                        <IconButton onClick={() => setEdit(false)} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                            <SaveIcon />
+                        </IconButton>
+                        :
+                        <IconButton onClick={() => setEdit(true)} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                            <EditIcon />
+                        </IconButton>
+                    }
+                    <IconButton onClick={() => setEdit(false)} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <DeleteIcon />
                     </IconButton>
                 </Grid>
@@ -184,20 +192,35 @@ function DetallesArticulo(props) {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                        <Typography className={classes.title} variant="h4" noWrap>
-                            { articulo.title }
-                        </Typography>
-                        {/* <Typography variant="subtitle1" paragraph>
-                            { articulo.body }
-                        </Typography> */}
-                        <TextField
-                        style={{ width: '100%' }}
-                            id="standard-multiline-static"
-                            multiline
-                            rows="10"
-                            defaultValue={ articulo.body }
-                            disabled="true"
+                        
+                        {edit ? 
+                        <>
+                            <InputBase
+                                placeholder="Title"
+                                defaultValue={ articulo.title }
+                                fullWidth
+                                multiline
+                                autoFocus
                             />
+                            <InputBase
+                                placeholder="Description"
+                                defaultValue={ articulo.body }
+                                fullWidth
+                                multiline
+                            />
+                        </>
+                        :
+                        <>
+                            <Typography className={classes.title} variant="h4" noWrap>
+                                { articulo.title }
+                            </Typography>
+                            <Typography variant="subtitle1" paragraph>
+                                { articulo.body }
+                            </Typography>
+                        </>
+                        
+                        }
+                        
                         <Typography variant="h6" paragraph>
                             { usuario.name }
                         </Typography>
@@ -277,7 +300,7 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         return { articulo , usuario, comentarios, statusCode: 200 }
 
     } catch (error) {
-        res.statusCode = 503;
+        //res.statusCode = 503;
         return { articulo: null, comentarios: null, usuario: null, statusCode: 503}
     }
 }
