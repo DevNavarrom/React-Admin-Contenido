@@ -10,9 +10,11 @@ import Header from '../components/LayoutContent/Header/Header';
 import HeaderLinks from '../components/LayoutContent/Header/HeaderLinks';
 import HeaderLinksLeft from '../components/LayoutContent/Header/HeaderLinksLeft';
 
-import { Grid } from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FaceIcon from '@material-ui/icons/Face';
+import PersonIcon from '@material-ui/icons/Person';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Typography from '@material-ui/core/Typography';
@@ -20,6 +22,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CardMedia from '@material-ui/core/CardMedia';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
 import axios from 'axios';
 
@@ -65,7 +73,16 @@ const styles = theme => ({
         marginRight: '20px',
         padding: '25.25%',
         borderRadius: "6px",
-      }
+      },
+      list: {
+        marginBottom: theme.spacing(2),
+      },
+      subheader: {
+        backgroundColor: theme.palette.background.paper,
+      },
+      text: {
+        padding: theme.spacing(2, 2, 0),
+      },
 });
 
 const muiTheme = createMuiTheme({
@@ -97,7 +114,7 @@ function DetallesArticulo(props) {
 
     //const {classes} = props;
 
-    const {usuario, articulo, classes} = props;
+    const {usuario, articulo, comentarios, classes} = props;
 
     return (
         <div style={{margin : "-10px"}}>
@@ -164,6 +181,7 @@ function DetallesArticulo(props) {
                             title="Image title"
                         />
                     </Grid>
+
                     <Grid item xs={12} md={6}>
                         <Typography className={classes.title} variant="h4" noWrap>
                             { articulo.title }
@@ -171,10 +189,47 @@ function DetallesArticulo(props) {
                         <Typography variant="subtitle1" paragraph>
                             { articulo.body }
                         </Typography>
-                        <Typography variant="h5" paragraph>
+                        <Typography variant="h6" paragraph>
                             { usuario.name }
                         </Typography>
+                        <Container>
+                            <Typography variant="h5" gutterBottom>
+                                Comments
+                            </Typography>
+                            <List className={classes.list}>
+                                {comentarios.map(({ id, name, email, body }) => (
+                                    <React.Fragment key={id}>
+                                        <ListItem button>
+                                            <ListItemAvatar>
+                                                <Avatar alt="User Picture" >
+                                                    <FaceIcon />
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText primary={name} secondary={
+                                                <React.Fragment>
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        className={classes.inline}
+                                                        color="textPrimary"
+                                                    >
+                                                        {email} -
+                                                    </Typography>
+                                                    {body}
+                                                </React.Fragment>
+                                            } />
+                                        </ListItem>
+                                        <Divider variant="inset" component="li" />
+                                    </React.Fragment>
+                                ))}
+                            </List>
+                        </Container>
                     </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        
+                    </Grid>
+
                 </Grid>
                 
             </div>
@@ -200,6 +255,7 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         }
         
         let articulo = await reqPost.data;
+        let comentarios = await reqComments.data;
         //let {respuesta: datos} = await reqDetalles.data;
         let reqUser = await axios.get(`https://jsonplaceholder.typicode.com/users/${articulo.userId}`);
         let usuario = await reqUser.data;
@@ -209,11 +265,11 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         }
 
         //return { articulo ,statusCode: 200, articulo : query.slugArticulo}
-        return { articulo ,statusCode: 200, usuario }
+        return { articulo ,statusCode: 200, usuario, comentarios }
 
     } catch (error) {
         res.statusCode = 503;
-        return { articulo: null, statusCode: 503}
+        return { articulo: null, comentarios: null, usuario: null, statusCode: 503}
     }
 }
 
