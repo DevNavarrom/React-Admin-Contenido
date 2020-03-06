@@ -52,23 +52,63 @@ const useStyles = makeStyles(theme => ({
 
   const options = [
     'Autor',
-    'Articulo',
-    'Album',
-    'Estado',
+    'Email',
+    'Username',
+    'Title',
+    'City',
+    'Company'
   ];
   
   const ITEM_HEIGHT = 48;
 
 function CustomizedInputBase() {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [search, setSearch] = React.useState('Title post');
     const open = Boolean(anchorEl);
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = event => {
         setAnchorEl(null);
+        if (event.target.value==='Autor') {
+          setSearch('Name Autor');
+        } else if(event.target.value==='Email') {
+          setSearch('Email Autor');
+        } else if(event.target.value==='Username') {
+          setSearch('Username');
+        } else if(event.target.value==='Title') {
+          setSearch('Title post');
+        } else if(event.target.value==='City') {
+          setSearch('City Autor');
+        } else if(event.target.value==='Company') {
+          setSearch('Company Autor');
+        }
+
+        /*switch (event.target.value) {
+          case 'Autor':
+            setSearch('Name Autor');
+            break;
+          case 'Email':
+            setSearch('Email Autor');
+            break;
+          case 'Username':
+            setSearch('Username');
+            break;
+          case 'Title':
+            setSearch('Title post');
+            break;
+          case 'City':
+            setSearch('City Autor');
+            break;
+          case 'Company':
+            setSearch('Company Autor');
+            break;
+          default:
+            setSearch('Title post');
+            break;
+        }*/
     };
     const classes = useStyles();
   
@@ -76,7 +116,7 @@ function CustomizedInputBase() {
       <Container component="form" className={classes.root}>
         <InputBase
           className={classes.input}
-          placeholder="Search..."
+          placeholder={search}
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
@@ -106,7 +146,7 @@ function CustomizedInputBase() {
                 }}
             >
                 {options.map(option => (
-                    <MenuItem key={option} selected={option === 'Autor'} onClick={handleClose}>
+                    <MenuItem key={option} selected={option === 'Autor'} onClick={(e) => handleClose(e)}>
                         {option}
                     </MenuItem>
                 ))}
@@ -148,13 +188,7 @@ export default class Articulos extends Component {
         return (
           <React.Fragment>
             <CssBaseline />
-            {/* <Grid container style={{ backgroundColor: '#FFFFFF', }}>
-              <Grid item xs={12}>
-
-                <CustomizedInputBase />
-
-              </Grid>
-            </Grid> */}
+            
             <Grid container spacing={2} style={{padding: '30px 10px' }}>
               <Grid item xs={12}>
 
