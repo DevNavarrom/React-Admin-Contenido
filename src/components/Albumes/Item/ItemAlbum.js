@@ -29,32 +29,32 @@ const useStyles = makeStyles(theme => ({
 
 const ItemAlbum = (props) => {
   const classes = useStyles();
-  const { album, foto } = props;
+  const { album } = props;
 
-  //const  [fotos,setFotos ]= useState({})
+  const  [foto,setFoto ]= useState({})
 
-  async function getFotos() {
+  async function getFoto() {
     try {
         
       const res = await axios.get(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos`);
 
-      setFotos(res.data[1].thumbnailUrl);
+      setFoto(res.data[1].thumbnailUrl);
 
     } catch (error) {
       
     }
   }
 
-  /*useEffect(() => {
-    getFotos();
-  }, []);*/
+  useEffect(() => {
+    getFoto();
+  }, []);
 
   return (
     <>
       <CssBaseline />
       <Grid item key={album.id} xs={12} sm={3} md={4}>
         <Link route="album" params={{ slugAlbum: slug("album"), id: album.id }}>
-          <CardActionArea component="a" href="#">
+          <CardActionArea component="a">
             <Card className={classes.card}>
               <CardMedia
                 className={classes.cardMedia}
