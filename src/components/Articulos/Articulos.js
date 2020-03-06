@@ -85,31 +85,8 @@ function CustomizedInputBase() {
         } else if(event.target.value==='Company') {
           setSearch('Company Autor');
         }
-
-        /*switch (event.target.value) {
-          case 'Autor':
-            setSearch('Name Autor');
-            break;
-          case 'Email':
-            setSearch('Email Autor');
-            break;
-          case 'Username':
-            setSearch('Username');
-            break;
-          case 'Title':
-            setSearch('Title post');
-            break;
-          case 'City':
-            setSearch('City Autor');
-            break;
-          case 'Company':
-            setSearch('Company Autor');
-            break;
-          default:
-            setSearch('Title post');
-            break;
-        }*/
     };
+
     const classes = useStyles();
   
     return (
@@ -163,7 +140,9 @@ export default class Articulos extends Component {
 
         this.state = {
           articulos : [],
-          open: false
+          open: false,
+          titulo: '',
+          descripcion: ''
         }
     }
 
@@ -180,6 +159,24 @@ export default class Articulos extends Component {
 
       } catch (error) {
         this.setState({ articulos : [] });
+      }
+    }
+
+    async createPost() {
+      try {
+        let post = {
+          title: this.state.titulo,
+          body: this.state.descripcion,
+          userId: 1
+        }
+        axios.post(`https://jsonplaceholder.typicode.com/posts`, { post })
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+          })
+          this.setState({ open: false });
+      } catch (error) {
+        
       }
     }
 
@@ -239,6 +236,9 @@ export default class Articulos extends Component {
                           placeholder="Title Post"
                           multiline
                           variant="outlined"
+                          value={this.state.titulo}
+                          defaultValue={this.state.titulo}
+                          onChange={(e) => this.setState({ titulo: e.target.value })}
                         />
                       </FormControl>
                     </Grid>
@@ -250,13 +250,16 @@ export default class Articulos extends Component {
                           placeholder="Decription Post"
                           multiline
                           variant="outlined"
+                          value={this.state.descripcion}
+                          defaultValue={this.state.descripcion}
+                          onChange={(e) => this.setState({ descripcion: e.target.value })}
                         />
                       </FormControl>
                     </Grid>
 
                   </Grid>
                   <Grid container direction="row" justify="flex-end" alignItems="center" style={{ marginTop: "10px" }}>
-                    <Button variant="outlined" size="large" color="secondary">
+                    <Button variant="outlined" size="large" color="secondary" onClick={this.createPost}>
                       Create
                     </Button>
                   </Grid>

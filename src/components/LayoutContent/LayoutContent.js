@@ -7,6 +7,7 @@ import HeaderLinks from './Header/HeaderLinks';
 import Header from './Header/Header';
 import Articulos from "../Articulos/Articulos";
 import Albumes from '../Albumes/Albumes';
+import Tareas from '../Tareas/Tareas';
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -41,35 +42,38 @@ export default function LayoutContentComponent(props) {
         brand="ReactPosts"
         rightLinks={
           <List className={classes.list}>
+
             <ListItem className={classes.listItem}>
-                <CustomButton
-                    click={() => setView(<Articulos/>)}
-                    color="transparent"
-                    target="_blank"
-                    className={classes.navLink}>
-                    Articulos
-                    </CustomButton>
+              <CustomButton
+                click={() => setView(<Articulos />)}
+                color="transparent"
+                target="_blank"
+                className={classes.navLink}>
+                Articulos
+              </CustomButton>
             </ListItem>
+
             <ListItem className={classes.listItem}>
-            <CustomButton
-            click={() => setView(<Albumes/>)}
+              <CustomButton
+                click={() => setView(<Albumes />)}
                 color="transparent"
                 target="_blank"
                 className={classes.navLink}>
                 Albumes
             </CustomButton>
             </ListItem>
-            <ListItem className={classes.listItem}>
-                <CustomButton
-                    color="transparent"
-                    href="#"
-                    target="_blank"
-                    className={classes.navLink}>
-                    Tareas
-                    </CustomButton>
 
+            <ListItem className={classes.listItem}>
+              <CustomButton
+                click={() => setView(<Tareas />)}
+                color="transparent"
+                target="_blank"
+                className={classes.navLink}>
+                Tareas
+              </CustomButton>
             </ListItem>
-        </List>
+
+          </List>
         }
         fixed
         changeColorOnScroll={{

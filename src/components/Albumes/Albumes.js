@@ -67,32 +67,13 @@ export default class Albumes extends Component {
     constructor(props) {
         super(props);
 
-        /*this.state = {
+        this.state = {
           albumes : []
-        }*/
-    }
-
-    static async getInitialProps({ query, res }) {
-      try {
-        const reqAlbums = await axios.get('https://jsonplaceholder.typicode.com/albums');
-        
-        //this.setState({ albumes : res.data });
-        if (reqAlbums.status >= 400) {
-          res.statusCode = reqAlbums.status;
-          return { albumes: [], statusCode: reqAlbums.status}
         }
-        let albumes = await reqAlbums.data;
-        
-        return { albumes, statusCode: reqAlbums.status}
-
-      } catch (error) {
-        res.statusCode = 503;
-        return { albumes: [], statusCode: 503}
-      }
     }
 
     componentDidMount() {
-      //this.getAlbumes();
+      this.getAlbumes();
     }
   
     async getAlbumes() {
@@ -108,8 +89,6 @@ export default class Albumes extends Component {
 
     render() {
 
-      const { albumes } = this.props;
-
       return (
         <React.Fragment>
           <CssBaseline />
@@ -122,7 +101,7 @@ export default class Albumes extends Component {
           </Grid>
           <Grid container spacing={2} style={{ width: '100%', padding: '10px' }}>
             {
-              albumes.map(album => (
+              this.state.albumes.map(album => (
                 <ItemAlbum key={album.id} album={album} />
               ))
             }

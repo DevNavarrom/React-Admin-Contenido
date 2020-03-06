@@ -6,10 +6,6 @@ import classNames from "classnames";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import Header from '../components/LayoutContent/Header/Header';
-import HeaderLinks from '../components/LayoutContent/Header/HeaderLinks';
-import HeaderLinksLeft from '../components/LayoutContent/Header/HeaderLinksLeft';
-
 import { Grid, Container, InputBase } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -113,39 +109,47 @@ const muiTheme = createMuiTheme({
 
 function DetallesArticulo(props) {
 
-    //const {classes} = props;
-
     const {usuario, articulo, comentarios, classes} = props;
 
     const [edit, setEdit] = React.useState(false);
+    const [titulo, setTitulo] = React.useState('');
+    const [descripcion, setDescripcion] = React.useState('');
+
+    const updatePost = async (event) => {
+        event.preventDefault();
+        try {
+            setEdit(true);
+            let post = {
+                id: articulo.id,
+                title: titulo,
+                body: descripcion,
+                userId: usuario.id
+            }
+            axios.put(`https://jsonplaceholder.typicode.com/posts/${articulo.id}`, { post })
+                .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const deletePost = event => {
+        event.preventDefault();
+        setEdit(false);
+        axios.delete(`https://jsonplaceholder.typicode.com/posts/${articulo.id}`)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+          })
+      }
 
     return (
         <div style={{margin : "-10px"}}>
-            {/* <Header
-                color="transparent"
-                brand="ReactPosts"
-                rightLinks={<HeaderLinks />}
-                leftLinks={<HeaderLinksLeft/>}
-                fixed
-                changeColorOnScroll={{
-                    height: 400,
-                    color: "white"
-                }}
-            /> */}
+            
             <MuiThemeProvider theme={muiTheme}>
-                {/* <div style={{ flexGrow: 1 }}>
-                    
-                </div> */}
-                {/* <AppBar position="static" >
-                    <Toolbar variant="dense">
-                        <IconButton onClick={() => Router.back()} edge="start" style={{ marginRight: 16 }} color="inherit" aria-label="menu">
-                            <ArrowBackIosIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit">
-                            {articulo}
-                        </Typography>
-                    </Toolbar>
-                </AppBar> */}
+                
                 <div className={classes.root}>
                     <AppBar position="static">
                         <Toolbar className={classes.toolbar}>
@@ -174,11 +178,11 @@ function DetallesArticulo(props) {
                             <SaveIcon />
                         </IconButton>
                         :
-                        <IconButton onClick={() => setEdit(true)} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                        <IconButton onClick={updatePost} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                             <EditIcon />
                         </IconButton>
                     }
-                    <IconButton onClick={() => setEdit(false)} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
+                    <IconButton onClick={deletePost} style={{ marginRight: 16 }} color="inherit" aria-label="menu">
                         <DeleteIcon />
                     </IconButton>
                 </Grid>
@@ -197,16 +201,18 @@ function DetallesArticulo(props) {
                         <>
                             <InputBase
                                 placeholder="Title"
-                                defaultValue={ articulo.title }
+                                value={ articulo.title }
                                 fullWidth
                                 multiline
                                 autoFocus
+                                onChange={(e) => setTitulo(e.target.value)}
                             />
                             <InputBase
                                 placeholder="Description"
-                                defaultValue={ articulo.body }
+                                value={ articulo.body }
                                 fullWidth
                                 multiline
+                                onChange={(e) => setDescripcion(e.target.value)}
                             />
                         </>
                         :
