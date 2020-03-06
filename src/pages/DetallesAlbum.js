@@ -6,19 +6,15 @@ import classNames from "classnames";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import Header from '../components/LayoutContent/Header/Header';
-import HeaderLinks from '../components/LayoutContent/Header/HeaderLinks';
-import HeaderLinksLeft from '../components/LayoutContent/Header/HeaderLinksLeft';
-
-import { Grid, Container, InputBase } from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import FaceIcon from '@material-ui/icons/Face';
-import PersonIcon from '@material-ui/icons/Person';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,6 +25,7 @@ import Divider from '@material-ui/core/Divider';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import Paper from '@material-ui/core/Paper';
 
 import axios from 'axios';
 
@@ -115,9 +112,9 @@ function DetallesAlbum(props) {
 
     //const {classes} = props;
 
-    const {usuario, articulo, comentarios, classes} = props;
+    const {usuario, album, albumes, fotos, classes} = props;
 
-    const [edit, setEdit] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
 
     return (
         <div style={{margin : "-10px"}}>
@@ -137,7 +134,7 @@ function DetallesAlbum(props) {
                                 <ArrowBackIosIcon />
                             </IconButton>
                             <Typography className={classes.title} variant="h5" noWrap>
-                                { articulo.title }
+                                { album.title }
                             </Typography>
                             
                         </Toolbar>
@@ -149,55 +146,73 @@ function DetallesAlbum(props) {
                 
                 <Grid container>
                     <Grid item xs={12} md={6}>
-                        <CardMedia
-                            className={classes.cardMedia}
-                            image="https://source.unsplash.com/random"
-                            title="Image title"
-                        />
+                        <CardActionArea component="a" href="#">
+                            <CardMedia
+                                onClick={() => setOpen(true)}
+                                className={classes.cardMedia}
+                                image="https://source.unsplash.com/random"
+                                title="Image title"
+                            />
+                        </CardActionArea>
+                        
                     </Grid>
 
                     <Grid item xs={12} md={6}>
                         
                         <Typography className={classes.title} variant="h4" noWrap>
-                            {articulo.title}
-                        </Typography>
-                        <Typography variant="subtitle1" paragraph>
-                            {articulo.body}
+                            {album.title}
                         </Typography>
                         
-                        <Typography variant="h6" paragraph>
-                            { usuario.name }
-                        </Typography>
                         <Container>
-                            <Typography variant="subtitle2" gutterBottom>
-                                {comentarios.length+" Comments"}
-                            </Typography>
+                            
                             <List className={classes.list}>
-                                {comentarios.map(({ id, name, email, body }) => (
-                                    <React.Fragment key={id}>
-                                        <ListItem button>
-                                            <ListItemAvatar>
-                                                <Avatar alt="User Picture" >
-                                                    <FaceIcon />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText primary={name} secondary={
-                                                <React.Fragment>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={classes.inline}
-                                                        color="textPrimary"
-                                                    >
-                                                        {email}
-                                                    </Typography>
-                                                    {" - "+body}
-                                                </React.Fragment>
-                                            } />
-                                        </ListItem>
-                                        <Divider variant="inset" component="li" />
-                                    </React.Fragment>
-                                ))}
+
+                                <React.Fragment key={usuario.id}>
+                                    <ListItem button >
+                                        <ListItemAvatar>
+                                            <Avatar alt="User Picture" >
+                                                <FaceIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={usuario.name} secondary={
+                                            <React.Fragment>
+                                                <Typography variant="subtitle2" gutterBottom>
+                                                    {albumes.length + " Albums"}
+                                                </Typography>
+                                            </React.Fragment>
+                                        } />
+
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={classes.inline}
+                                                    color="textPrimary">
+                                                    Email:
+                                                </Typography>
+                                                {usuario.email}
+                                            </React.Fragment>
+                                        } />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={classes.inline}
+                                                    color="textPrimary">
+                                                    Photos:
+                                                </Typography>
+                                                {fotos.length}
+                                            </React.Fragment>
+                                        } />
+                                    </ListItem>
+                                    <Divider variant="fullWidth" component="li" />
+                                </React.Fragment>
                             </List>
                         </Container>
                     </Grid>
@@ -210,47 +225,88 @@ function DetallesAlbum(props) {
                 
             </div>
             
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              open={open}
+              onClose={() => setOpen(false)}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={open}>
+                <Paper style={{ padding: '20px', width: '80%' }}>
+
+               <Grid container direction="column" justify="center" spacing={3}>
+
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      
+                    </Grid>
+
+                  </Grid>
+                  <Grid container direction="row" justify="flex-end" alignItems="center" style={{ marginTop: "10px" }}>
+                    
+                  </Grid>
+                </Paper>
+              </Fade>
+            </Modal>
+
         </div>
     );
 }
 
-DetallesArticulo.getInitialProps = async ({ query, res }) => {
+DetallesAlbum.getInitialProps = async ({ query, res }) => {
         
     try {
         let idAlbum = query.id;
-        let [reqAlbum, reqComments] = await Promise.all([
+        let [reqAlbum] = await Promise.all([
             axios.get(`https://jsonplaceholder.typicode.com/albums/${idAlbum}`),
-            axios.get(`https://jsonplaceholder.typicode.com/posts/${idArticulo}/comments`),
         ]);
-        
-        //let reqDetalles = await axios.get(`https://jsonplaceholder.typicode.com/posts/${idArticulo}/comments`);
 
-        if (reqAlbum.status >= 400 && reqComments.status >= 400) {
+        if (reqAlbum.status >= 400) {
           res.statusCode = reqAlbum.status;
-          return { articulo: null, comentarios: null, usuario: null, statusCode: reqAlbum.status }
+          return { album: null, usuario: null, statusCode: reqAlbum.status }
         }
-        
-        let articulo = await reqAlbum.data;
-        let comentarios = await reqComments.data;
-        //let {respuesta: datos} = await reqDetalles.data;
-        let reqUser = await axios.get(`https://jsonplaceholder.typicode.com/users/${articulo.userId}`);
-        let usuario = await reqUser.data;
+        let album = await reqAlbum.data;
 
+        let reqFotos = await axios.get(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos`);
+        if (reqFotos.status >= 400) {
+            fotos = null;
+        }
+        let fotos = await reqFotos.data;
+
+        let reqUser = await axios.get(`https://jsonplaceholder.typicode.com/users/${album.userId}`);
         if (reqUser.status >= 400) {
             usuario = null;
         }
+        let usuario = await reqUser.data;
 
-        //return { articulo ,statusCode: 200, articulo : query.slugArticulo}
-        return { articulo , usuario, comentarios, statusCode: 200 }
+        let reqAlbumes = await axios.get(`https://jsonplaceholder.typicode.com/users/${album.userId}/albums`);
+        if (reqAlbumes.status >= 400) {
+            albumes = null;
+        }
+        let albumes = await reqAlbumes.data;
+
+        return { album , usuario, albumes, fotos, statusCode: 200 }
 
     } catch (error) {
         //res.statusCode = 503;
-        return { articulo: null, comentarios: null, usuario: null, statusCode: 503}
+        return { album: null, usuario: null, albumes: null, fotos: null, statusCode: 503}
     }
 }
 
-DetallesArticulo.propTypes = {
+DetallesAlbum.propTypes = {
     classes: PropTypes.object.isRequired,
 };
   
-export default withStyles(styles)(DetallesArticulo);
+export default withStyles(styles)(DetallesAlbum);

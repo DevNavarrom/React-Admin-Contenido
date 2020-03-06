@@ -293,7 +293,7 @@ DetallesArticulo.getInitialProps = async ({ query, res }) => {
         let usuario = await reqUser.data;
 
         if (reqUser.status >= 400) {
-            usuario = null;
+            return {usuario: null};
         }
 
         //return { articulo ,statusCode: 200, articulo : query.slugArticulo}

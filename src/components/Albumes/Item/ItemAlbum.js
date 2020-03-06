@@ -9,7 +9,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import axios from 'axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import {Link} from '../../../../routes';
+import slug from '../../../helpers/slug';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -28,9 +29,9 @@ const useStyles = makeStyles(theme => ({
 
 const ItemAlbum = (props) => {
   const classes = useStyles();
-  const { album } = props;
+  const { album, foto } = props;
 
-  const  [fotos,setFotos ]= useState({})
+  //const  [fotos,setFotos ]= useState({})
 
   async function getFotos() {
     try {
@@ -44,28 +45,31 @@ const ItemAlbum = (props) => {
     }
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     getFotos();
-  }, []);
+  }, []);*/
 
   return (
     <>
       <CssBaseline />
       <Grid item key={album.id} xs={12} sm={3} md={4}>
-        <CardActionArea component="a" href="#">
-          <Card className={classes.card}>
-            <CardMedia
-              className={classes.cardMedia}
-              image={fotos}
-              title="Image title"
-            />
-            <CardContent className={classes.cardContent}>
-              <Typography gutterBottom variant="h5" component="h2">
-                {album.title}
-              </Typography>
-            </CardContent>
-          </Card>
-        </CardActionArea>
+        <Link route="album" params={{ slugAlbum: slug("album"), id: album.id }}>
+          <CardActionArea component="a" href="#">
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardMedia}
+                image={foto}
+                title="Image title"
+              />
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {album.title}
+                </Typography>
+              </CardContent>
+            </Card>
+          </CardActionArea>
+        </Link>
+        
       </Grid>
       
     </>
@@ -75,10 +79,23 @@ const ItemAlbum = (props) => {
 }
 
 
-ItemAlbum.getInitialProps = async ({ req }) => {
-  const res = await axios.get(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos`);
-  const json = res.data.thumbnailUrl;
-  return { fotos: json };
+ItemAlbum.getInitialProps = async ({ query, res }) => {
+  try {
+    console.log('Album Id::: '+ album.id);
+    let reqFotos = await axios.get(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos`);
+
+    if (reqFotos.status >= 400) {
+      res.statusCode = reqFotos.status;
+      return {foto: null, statusCode: reqFotos.status};
+    }
+    let foto = await reqFotos.data[1].thumbnailUrl;
+
+    return { foto, statusCode: 200 };
+
+  } catch (error) {
+    return { foto: null, statusCode: 503 }
+  }
+  
 }
 
 ItemAlbum.propTypes = {

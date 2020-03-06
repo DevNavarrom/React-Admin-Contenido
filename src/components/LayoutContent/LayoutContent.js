@@ -6,6 +6,11 @@ import GridItem from "./Grid/GridItem";
 import HeaderLinks from './Header/HeaderLinks';
 import Header from './Header/Header';
 import Articulos from "../Articulos/Articulos";
+import Albumes from '../Albumes/Albumes';
+
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import CustomButton from '../CustomButton/CustomButton';
 
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,25 +22,7 @@ export default function LayoutContentComponent(props) {
   const classes = useStyles();
 
   const [view, setView] = React.useState(<Articulos/>);
-
-  const changeView = (vista) => {
-    switch (vista) {
-      case 'Articulos':
-        setView(<Articulos/>);
-        break;
-      case 'Albumes':
-        setView(<Albumes/>);
-        break;
-      case 'Tareas':
-        setView(<Articulos/>);
-        break;
-
-      default:
-        setView(<Articulos/>);
-        break;
-    }
-  };
-
+  
   return (
     <div >
       {/* <AppBar position="static">
@@ -52,7 +39,38 @@ export default function LayoutContentComponent(props) {
       <Header
         color="transparent"
         brand="ReactPosts"
-        rightLinks={<HeaderLinks />}
+        rightLinks={
+          <List className={classes.list}>
+            <ListItem className={classes.listItem}>
+                <CustomButton
+                    click={() => setView(<Articulos/>)}
+                    color="transparent"
+                    target="_blank"
+                    className={classes.navLink}>
+                    Articulos
+                    </CustomButton>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+            <CustomButton
+            click={() => setView(<Albumes/>)}
+                color="transparent"
+                target="_blank"
+                className={classes.navLink}>
+                Albumes
+            </CustomButton>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+                <CustomButton
+                    color="transparent"
+                    href="#"
+                    target="_blank"
+                    className={classes.navLink}>
+                    Tareas
+                    </CustomButton>
+
+            </ListItem>
+        </List>
+        }
         fixed
         changeColorOnScroll={{
           height: 400,

@@ -51,12 +51,6 @@ const ItemArticulo = (props) => {
   );
 }
 
-ItemArticulo.getInitialProps = async ({ req }) => {
-  const res = await fetch('https://api.github.com/repos/developit/preact')
-  const json = await res.json()
-  return { stars: json.stargazers_count }
-}
-
 ItemArticulo.propTypes = {
   post: PropTypes.object,
 };

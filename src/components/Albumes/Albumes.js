@@ -35,15 +35,6 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-  const options = [
-    'Autor',
-    'Articulo',
-    'Album',
-    'Estado',
-  ];
-  
-  const ITEM_HEIGHT = 48;
-
 function SearchFilter() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -61,42 +52,12 @@ function SearchFilter() {
       <Container component="form" className={classes.root}>
         <InputBase
           className={classes.input}
-          placeholder="Search..."
+          placeholder="Album title..."
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
           <SearchIcon />
         </IconButton>
-        <Divider className={classes.divider} orientation="vertical" />
-        <div>
-            <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-            >
-                <FilterListIcon />
-            </IconButton>
-            <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: 200,
-                    },
-                }}
-            >
-                {options.map(option => (
-                    <MenuItem key={option} selected={option === 'Autor'} onClick={handleClose}>
-                        {option}
-                    </MenuItem>
-                ))}
-            </Menu>
-        </div>
       </Container>
     );
   }
@@ -128,24 +89,25 @@ export default class Albumes extends Component {
 
     render() {
 
-        return (
-            <React.Fragment>
-                <CssBaseline />
-                <Grid container style={{ backgroundColor: '#FFFFFF',}}>
-                    <Grid item xs={12}>
-                        
-                        <SearchFilter/>
+      return (
+        <React.Fragment>
+          <CssBaseline />
+          <Grid container spacing={2} style={{ padding: '30px 10px' }}>
+            <Grid item xs={12}>
 
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} style={{ width: '100%', padding: '10px' }}>
-                  {
-                  this.state.albumes.map(album => (
-                    <ItemAlbum key={album.id} album={album} />
-                  ))
-                  }
-                </Grid>
-            </React.Fragment>
-        );
+              <SearchFilter />
+
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ width: '100%', padding: '10px' }}>
+            {
+              this.state.albumes.map(album => (
+                <ItemAlbum key={album.id} album={album} />
+              ))
+            }
+          </Grid>
+
+        </React.Fragment>
+      );
     }
 }
