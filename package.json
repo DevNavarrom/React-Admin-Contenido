@@ -14,7 +14,7 @@
     "classnames": "^2.2.6",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.4.1",
-    "next": "9.2.2",
+    "next": "11.1.0",
     "next-routes": "^1.4.2",
     "prop-types": "^15.7.2",
     "react": "16.12.0",
